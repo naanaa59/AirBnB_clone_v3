@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ This script creates an api flask for hbnb project"""
 from api.v1.views import app_views
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 import os
 
@@ -13,6 +13,11 @@ app.register_blueprint(app_views)
 @app.teardown_appcontext
 def teardown(exception=None):
     return storage.close()
+
+
+@app.errorhandler(404)
+def error(error):
+    return jsonify({"error": "Not found"}), 404
 
 
 if __name__ == "__main__":
