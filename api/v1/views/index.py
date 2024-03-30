@@ -13,11 +13,13 @@ from models.user import User
 
 @app_views.route("/status", methods=['GET'], strict_slashes=False)
 def status():
+    """ status app """
     return jsonify({"status": "OK"})
 
 
 @app_views.route("/stats", methods=['GET'], strict_slashes=False)
 def stats():
+    """ stats app """
     stats = {
             "amenities": storage.count(Amenity),
             "cities": storage.count(City),
