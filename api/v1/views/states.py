@@ -2,7 +2,7 @@
 """ This script handles all default RESTFul API actions """
 
 from models.state import State
-from flask import jsonify, request
+from flask import abort, jsonify, request
 from models import storage
 from api.v1.views import app_views
 
