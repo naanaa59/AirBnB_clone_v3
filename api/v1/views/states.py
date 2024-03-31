@@ -40,7 +40,8 @@ def state_id_delete(state_id):
 def state_post():
 
     try:
-        if not request.get_json()
+        if not request.get_json():
+            abort(400, "Not a JSON")
     except Exception as e:
         abort(400, "Not a JSON")
 
@@ -63,7 +64,8 @@ def state_put(state_id):
         abort(404)
 
     try:
-        if not request.get_json()
+        if not request.get_json():
+            abort(400, "Not a JSON")
     except Exception as e:
         abort(400, "Not a JSON")
 
