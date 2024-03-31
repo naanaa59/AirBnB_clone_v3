@@ -2,7 +2,7 @@
 """ This script handles all default RESTFul API actions """
 
 from models.state import State
-from flask import abort, jsonify, request
+from flask import abort, jsonify, request, make_response
 from models import storage
 from api.v1.views import app_views
 
@@ -38,11 +38,11 @@ def state_id_delete(state_id):
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def state_post():
-    state_obj_dict = request.get_json()
 
-    if not state_obj_dict:
+    if request.get_json() is None:
         abort(400, "Not a JSON")
 
+    state_obj_dict = request.get_json()
     if 'name' not in state_obj_dict:
         abort(400, "Missing name")
 
@@ -62,7 +62,7 @@ def state_put(state_id):
 
     data = request.get_json()
 
-    if not data:
+    if data is None:
         abort(400, "Not a JSON")
 
     for key, value in data.items():
