@@ -59,13 +59,13 @@ def state_put(state_id):
 
     state_obj = storage.get(State, state_id)
 
+    if not state_obj:
+        abort(404)
+
     try:
         request.get_json()
     except Exception as e:
         abort(400, "Not a JSON")
-
-    if not state_obj:
-        abort(404)
 
     data = request.get_json()
 
