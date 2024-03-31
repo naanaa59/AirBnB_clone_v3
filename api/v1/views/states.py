@@ -39,7 +39,9 @@ def state_id_delete(state_id):
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def state_post():
 
-    if request.get_json() is None:
+    try:
+        request.get_json()
+    except Exception as e:
         abort(400, "Not a JSON")
 
     state_obj_dict = request.get_json()
@@ -57,13 +59,15 @@ def state_put(state_id):
 
     state_obj = storage.get(State, state_id)
 
+    try:
+        request.get_json()
+    except Exception as e:
+        abort(400, "Not a JSON")
+
     if not state_obj:
         abort(404)
 
     data = request.get_json()
-
-    if data is None:
-        abort(400, "Not a JSON")
 
     for key, value in data.items():
         if key == "id" or key == "created_at" or key == "updated_at":
