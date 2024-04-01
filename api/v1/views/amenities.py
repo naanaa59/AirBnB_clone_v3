@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """ This script handles all default RESTFul API actions """
 
-from models.amenity import Amenity
 from flask import abort, jsonify, request
 from models import storage
 from api.v1.views import app_views
+from models.amenity import Amenity
 
 
 @app_views.route('/amenities', methods=['GET'], strict_slashes=False)
@@ -13,7 +13,7 @@ def amenities():
     amenity_list = []
     for amenity in all_amenities:
         amenity_list.append(amenity.to_dict())
-    return jsonify(amenity_list)
+    return amenity_list
 
 
 @app_views.route(
@@ -22,7 +22,7 @@ def amenity_get_id(amenity_id):
     amenity_obj = storage.get(Amenity, amenity_id)
     if not amenity_obj:
         abort(404)
-    return jsonify(amenity_obj.to_dict())
+    return amenity_obj.to_dict()
 
 
 @app_views.route(
@@ -33,15 +33,15 @@ def amenity_id_delete(amenity_id):
         abort(404)
     storage.delete(amenity_obj)
     storage.save()
-    return jsonify({}), 200
+    return {}, 200
 
 
 @app_views.route('/amenities', methods=['POST'], strict_slashes=False)
 def amenity_post():
     try:
-        if not request.get_json:
+        if not request.get_json():
             abort(400, "Not a JSON")
-    except Exception as e:
+    except Exception:
         abort(400, "Not a JSON")
     amenity_obj_dict = request.get_json()
     if 'name' not in amenity_obj_dict:
@@ -49,7 +49,7 @@ def amenity_post():
     amenity_instance = Amenity(**amenity_obj_dict)
     amenity_instance.save()
 
-    return jsonify(amenity_instance.to_dict), 201
+    return amenity_instance.to_dict(), 201
 
 
 @app_views.route(
@@ -62,7 +62,7 @@ def amenity_put_id(amenity_id):
     try:
         if not request.get_json():
             abort(400, "Not a JSON")
-    except Exception as e:
+    except Exception:
         abort(400, "Not a JSON")
 
     new_data = request.get_json()
