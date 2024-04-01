@@ -76,7 +76,7 @@ def review_post(place_id):
     review_obj = Review(place_id=place_id, **data)
     review_obj.save()
 
-    return jsonify(review_obj.to_dict()), 200
+    return jsonify(review_obj.to_dict()), 201
 
 
 @app_views.route("/reviews/<review_id>", methods=['PUT'],
