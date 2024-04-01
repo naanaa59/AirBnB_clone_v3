@@ -16,14 +16,15 @@ storage_t = environ.get('HBNB_TYPE_STORAGE')
 @app_views.route("/places/<place_id>/amenities", methods=[
     'GET'], strict_slashes=False)
 def amenities_get(place_id):
-    amenities = storage.get(Place, place_id)
+    place_obj = storage.get(Place, place_id)
     if not place_obj:
         abort(404)
     if storage_t == "db":
         amenities = place.amenities
     else:
-        amenities = place.amenity_ids
-    all_amenities = [amenity.to_dict() for amenity in amenities]
+        amenities = storage.get(Amenity, amenity_ids)
+    all_amenities = [
+            amenity.to_dict() for amenity in place_obj.amenity_ids]
     return jsonify(all_amenities)
 
 
@@ -44,7 +45,7 @@ def amenity_id_delete(amenity_id):
         if amenity_id not in place_obj.amenity_ids:
             abort(404)
         place_obj.amenities.remove(amenity_id)
-
+    storage.save()
     return jsonify({}), 200
 
 
@@ -59,12 +60,12 @@ def amenity_post(amenity_id):
         abort(404)
         if storage_t == "db":
             if amenity_obj not in place_obj.amenities:
-                abort(404)
+                place_obj.amenities.append(amenity_obj)
             else:
                 return jsonify(amenity_obj.to_dict()), 200
         else:
             if amenity_id not in place_obj.amenity_ids:
-                abort(404)
+                place_obj.amenity_ids.append(amenity_id)
             else:
                 return jsonify(amenity_obj.to_dict()), 200
         return jsonify(amenity_obj.to_dict()), 201
