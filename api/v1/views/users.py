@@ -13,7 +13,7 @@ def all_users():
     user_list = []
     for user in all_users:
         user_list.append(user.to_dict())
-    return user_list
+    return jsonify(user_list)
 
 
 @app_views.route(
