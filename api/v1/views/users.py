@@ -33,7 +33,7 @@ def user_id_delete(user_id):
         abort(404)
     storage.delete(user_obj)
     storage.save()
-    return {}, 200
+    return jsonify({}), 200
 
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
@@ -44,12 +44,14 @@ def user_post():
     except Exception as e:
         abort(400, "Not a JSON")
     user_obj_dict = request.get_json()
-    if 'name' not in user_obj_dict:
-        abort(400, "Missing name")
+    if 'email' not in user_obj_dict:
+        abort(400, "Missing email")
+    if 'password' not in user_obj_dict:
+        abort(400, "Missing password")
     user_instance = User(**user_obj_dict)
     user_instance.save()
 
-    return user_instance.to_dict(), 201
+    return jsonify(user_instance.to_dict()), 201
 
 
 @app_views.route(
@@ -66,9 +68,8 @@ def user_put_id(user_id):
         abort(400, "Not a JSON")
 
     new_data = request.get_json()
-    keys_list = ("id, email, created_at, updated_at")
     for key, value in new_data.items():
-        if key not in keys_list:
+        if key not in ('id, email, created_at, updated_at'):
             setattr(user_obj, key, value)
-    user.save()
-    return user_obj.to_dict(), 200
+    user_obj.save()
+    return jsonify(user_obj.to_dict()), 200
