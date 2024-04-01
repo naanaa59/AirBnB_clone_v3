@@ -8,7 +8,7 @@ from models.user import User
 
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
-def users():
+def all_users():
     all_users = storage.all(User).values()
     user_list = []
     for user in all_users:
