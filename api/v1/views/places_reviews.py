@@ -3,6 +3,7 @@
 
 from models.place import Place
 from models.review import Review
+from models.user import User
 from models import storage
 from flask import abort, jsonify, request
 from api.v1.views import app_views
@@ -65,7 +66,8 @@ def review_post(place_id):
         if key == "user_id":
             user_id = value
 
-    if not user_id:
+    user_obj = storage.get(User, user_id)
+    if not user_obj:
         abort(404)
 
     if "text" not in data:
@@ -91,7 +93,8 @@ def review_put(review_id):
         abort(400, "Not a JSON")
 
     data = request.get_json()
-    ignored_keys = ['id', 'user_id', 'place_id', 'created_at', 'updated_at']
+
+    ignored_keys = ['id', "user_id", 'place_id', 'created_at', 'updated_at']
 
     for key, value in data.items():
         if key in ignored_keys:
