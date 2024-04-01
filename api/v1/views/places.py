@@ -97,4 +97,4 @@ def place_put(place_id):
         setattr(place_obj, key, value)
     storage.save()
 
-    return jsonify(city_obj.to_dict()), 200
+    return jsonify(place_obj.to_dict()), 200
