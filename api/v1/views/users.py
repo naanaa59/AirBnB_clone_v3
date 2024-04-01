@@ -66,11 +66,9 @@ def user_put_id(user_id):
         abort(400, "Not a JSON")
 
     new_data = request.get_json()
+    keys_list = ("id", "email", "created_at", "updated_at")
     for key, value in new_data.items():
-        if key == "id"
-        or key == "email"
-        or key == "created_at"
-        or key == "updated_at":
+        if key in keys_list:
             pass
         setattr(user_obj, key, value)
         storage.save()
