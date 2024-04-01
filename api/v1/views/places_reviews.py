@@ -94,11 +94,10 @@ def review_put(review_id):
 
     data = request.get_json()
 
-    ignored_keys = ['id', "user_id", 'place_id', 'created_at', 'updated_at']
+    ignored_keys = ["id", "user_id", "place_id", "created_at", "updated_at"]
 
     for key, value in data.items():
-        if key in ignored_keys:
-            pass
-        setattr(review_obj, key, value)
+        if key not in ignored_keys:
+            setattr(review_obj, key, value)
     storage.save()
     return jsonify(review_obj.to_dict()), 200
