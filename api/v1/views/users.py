@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """ This script handles all default RESTFul API actions """
 
-from models.user import User
 from flask import abort, jsonify, request
 from models import storage
 from api.v1.views import app_views
+from models.user import User
 
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
@@ -49,7 +49,7 @@ def user_post():
     user_instance = User(**user_obj_dict)
     user_instance.save()
 
-    return user_instance.to_dict, 201
+    return user_instance.to_dict(), 201
 
 
 @app_views.route(
@@ -66,9 +66,9 @@ def user_put_id(user_id):
         abort(400, "Not a JSON")
 
     new_data = request.get_json()
-    keys_list = ("id", "email", "created_at", "updated_at")
+    keys_list = ("id, email, created_at, updated_at")
     for key, value in new_data.items():
         if key not in keys_list:
             setattr(user_obj, key, value)
-            storage.save()
+    user.save()
     return user_obj.to_dict(), 200
