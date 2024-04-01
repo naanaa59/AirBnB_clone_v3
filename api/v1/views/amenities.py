@@ -60,7 +60,7 @@ def amenity_put_id(amenity_id):
     if not amenity_obj:
         abort(404)
     try:
-        if not request.get_json:
+        if not request.get_json():
             abort(400, "Not a JSON")
     except Exception as e:
         abort(400, "Not a JSON")
