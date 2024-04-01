@@ -3,6 +3,7 @@
 
 from models.city import City
 from models.place import Place
+from models.user import User
 from flask import abort, jsonify, request, make_response
 from models import storage
 from api.v1.views import app_views
@@ -17,7 +18,7 @@ def places_get(city_id):
     places = city_obj.places
     list_places = []
     for place in places:
-        list_cities.append(place.to_dict())
+        list_places.append(place.to_dict())
 
     return jsonify(list_places)
 
@@ -26,7 +27,7 @@ def places_get(city_id):
 def place_get_id(place_id):
 
     place_obj = storage.get(Place, place_id)
-    if not city_obj:
+    if not place_obj:
         abort(404)
 
     return jsonify(place_obj.to_dict())
