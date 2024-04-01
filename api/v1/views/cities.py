@@ -82,9 +82,8 @@ def city_put(city_id):
     data = request.get_json()
     ignored_keys = ["id", "created_at", "updated_at", "state_id"]
     for key, value in data.items():
-        if key in ignored_keys:
-            pass
-        setattr(city_obj, key, value)
+        if key not in ignored_keys:
+            setattr(city_obj, key, value)
         storage.save()
 
     return jsonify(city_obj.to_dict()), 200

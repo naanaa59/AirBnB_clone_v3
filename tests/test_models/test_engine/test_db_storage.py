@@ -70,47 +70,45 @@ test_db_storage.py'])
 
 class TestDBStorage(unittest.TestCase):
     """Test the FileStorage class"""
-    @unittest.skipIf(models.storage_t != 'fs', "not testing file storage")
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
     def test_all_returns_dict(self):
         """Test that all returns a dictionaty"""
         self.assertIs(type(models.storage.all()), dict)
 
-    @unittest.skipIf(models.storage_t != 'fs', "not testing file storage")
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
     def test_all_no_class(self):
         """Test that all returns all rows when no class is passed"""
 
-    @unittest.skipIf(models.storage_t != 'fs', "not testing file storage")
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
     def test_new(self):
         """test that new adds an object to the database"""
 
-    @unittest.skipIf(models.storage_t != 'fs', "not testing file storage")
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
 
-    @unittest.skipIf(models.storage_t != 'fs', "not testing file storage")
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
     def test_get(self):
         """ Test that gets the object by id"""
+        dict = {"name": "Statt1"}
+        instance = State(**dict)
+        storage.new(instance)
+        storage.save()
+        get_instance = storage.get(State, instance.id)
+        self.assertEqual(get_instance, instance)
 
-        storage = FileStorage()
-        all_objects = storage.all()
-        first_obj = list(storage.all(State).values())[0]
-        first_obj_id = first_obj.id
-        first_obj_cls = first_obj.__class__.__name__
-
-        obj_get = storage.get(first_obj_cls, str(first_obj_id))
-
-        self.assertEqual(obj_get, first_obj)
-
-    @unittest.skipIf(models.storage_t != 'fs', "not testing file storage")
+    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
     def test_count(self):
         """ Test that count method is working properly """
-        storage = FileStorage()
+        dict = {"name": "Statt1"}
+        instance = State(**dict)
+        storage.new(instance)
+        storage.save()
+        dict = {"name": "city1"}
+        instance = City(**dict)
+        storage.new(city)
+        storage.save()
 
-        all_objects = storage.all()
-        count_all = len(all_objects)
+        c = storage.count()
 
-        state_objects = storage.all(State)
-        count_states = len(state_objects)
-
-        self.assertEqual(count_all, storage.count())
-        self.assertEqual(count_states, storage.count(State))
+        self.assertEqual(len(dtorage.all()), c)
