@@ -49,7 +49,7 @@ def amenity_post():
     amenity_instance = Amenity(**amenity_obj_dict)
     amenity_instance.save()
 
-    return jsonify(amenity_instance.to_dict, 201)
+    return jsonify(amenity_instance.to_dict), 201
 
 
 @app_views.route(
