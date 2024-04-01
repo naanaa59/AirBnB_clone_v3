@@ -24,6 +24,7 @@ def citites_get(state_id):
 
 @app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
 def citites_get_id(city_id):
+
     city_obj = storage.get(City, city_id)
     if not city_obj:
         abort(404)
@@ -45,7 +46,9 @@ def city_id_delete(city_id):
 @app_views.route('/states/<state_id>/cities', methods=['POST'],
                  strict_slashes=False)
 def city_post(state_id):
-
+    state_obj = storage.get(State, state_id)
+    if not state_obj:
+        abort(404)
     try:
         if not request.get_json():
             abort(400, "Not a JSON")
