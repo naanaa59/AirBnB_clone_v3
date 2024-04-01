@@ -62,32 +62,14 @@ def amenity_post(amenity_id):
         if storage == "db":
             if amenity_obj not in place_obj.amenities:
                 abort(404)
-            return jsonify(amenity_obj.to_dict()), 201
+            else:
+                return jsonify(amenity_obj.to_dict()), 200
         else:
             if amenity_id not in place_obj.amenity_ids:
                 abort(404)
-            return jsonify(amenity_obj.to_dict()), 201
+            else:
+                return jsonify(amenity_obj.to_dict()), 200
+        return jsonify(amenity_obj.to_dict()), 201
 
 
-@app_views.route("/reviews/<review_id>", methods=['PUT'],
-                 strict_slashes=False)
-def review_put(review_id):
 
-    review_obj = storage.get(Review, review_id)
-    if not review_obj:
-        abort(404)
-    try:
-        if not request.get_json():
-            abort(400, "Not a JSON")
-    except Exception as e:
-        abort(400, "Not a JSON")
-
-    data = request.get_json()
-
-    ignored_keys = ["id", "user_id", "place_id", "created_at", "updated_at"]
-
-    for key, value in data.items():
-        if key not in ignored_keys:
-            setattr(review_obj, key, value)
-    storage.save()
-    return jsonify(review_obj.to_dict()), 200
