@@ -68,9 +68,7 @@ def user_put_id(user_id):
     new_data = request.get_json()
     keys_list = ("id", "email", "created_at", "updated_at")
     for key, value in new_data.items():
-        if key in keys_list:
-            pass
-        setattr(user_obj, key, value)
-        storage.save()
-
+        if key not in keys_list:
+            setattr(user_obj, key, value)
+            storage.save()
     return jsonify(user_obj.to_dict()), 200
