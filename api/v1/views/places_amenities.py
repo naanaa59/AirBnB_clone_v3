@@ -70,6 +70,3 @@ def amenity_post(amenity_id):
             else:
                 return jsonify(amenity_obj.to_dict()), 200
         return jsonify(amenity_obj.to_dict()), 201
-
-
-
