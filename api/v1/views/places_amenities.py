@@ -20,7 +20,7 @@ def amenities_get(place_id):
     amenities = storage.get(Place, place_id)
     if not place_obj:
         abort(404)
-    if storage == "db":
+    if os.environ("HBNB_TYPE_STORAGE") == "db":
         amenities = [amenity.to_dict() for amenity in place.amenities]
     else:
         amenities = [storage.get(
@@ -38,7 +38,7 @@ def amenity_id_delete(amenity_id):
     amenity_obj = storage.get(Amenity, amenity_id)
     if not amenity_obj:
         abort(404)
-    if storage == "db":
+    if os.environ("HBNB_TYPE_STORAGE") == "db":
         if amenity_obj not in place_obj.amenities:
             abort(404)
         place_obj.amenities.remove(amenity_obj)
@@ -59,7 +59,7 @@ def amenity_post(amenity_id):
     amenity_obj = storage.get(Amenity, amenity_id)
     if not amenity_obj:
         abort(404)
-        if storage == "db":
+        if os.environ("HBNB_TYPE_STORAGE") == "db":
             if amenity_obj not in place_obj.amenities:
                 abort(404)
             else:
