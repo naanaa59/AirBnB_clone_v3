@@ -56,9 +56,18 @@ def place_post(city_id):
         abort(400, "Not a JSON")
 
     place_req = request.get_json()
+    if 'user_id' not in place_req:
+        abort(400, "Missing user_id")
+
+    for key, value in place_req.items():
+        if key == "user_id":
+            user_id = value
+
+    user_obj = storage.get(User, user_id)
+    if not user_obj:
+        abort(404)
     if 'name' not in place_req:
         abort(400, "Missing name")
-
     place_inst = Place(city_id=city_id, **place_req)
     place_inst.save()
 
