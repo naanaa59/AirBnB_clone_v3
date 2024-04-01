@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ This script creates an api flask for hbnb project"""
 from api.v1.views import app_views
+from flask_cors import CORS
 from flask import Flask, jsonify
 from models import storage
 import os
@@ -8,6 +9,7 @@ import os
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
+CORS(app)
 
 
 @app.teardown_appcontext
