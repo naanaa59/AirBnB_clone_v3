@@ -80,7 +80,7 @@ def place_put(place_id):
 
     place_obj = storage.get(Place, place_id)
 
-    if not city_obj:
+    if not place_obj:
         abort(404)
 
     try:
@@ -95,6 +95,6 @@ def place_put(place_id):
         if key in ignored_keys:
             pass
         setattr(place_obj, key, value)
-        storage.save()
+    storage.save()
 
     return jsonify(city_obj.to_dict()), 200
