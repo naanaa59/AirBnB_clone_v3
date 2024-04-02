@@ -14,6 +14,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+from models import storage
 import json
 import os
 import pep8
@@ -87,8 +88,7 @@ class TestDBStorage(unittest.TestCase):
     def test_save(self):
         """Test that save properly saves objects to file.json"""
 
-    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
-    def test_get(self):
+    def test_get_db(self):
         """ Test that gets the object by id"""
         dict = {"name": "Statt1"}
         instance = State(**dict)
@@ -97,18 +97,17 @@ class TestDBStorage(unittest.TestCase):
         get_instance = storage.get(State, instance.id)
         self.assertEqual(get_instance, instance)
 
-    @unittest.skipIf(models.storage_t != 'db', "not testing file storage")
-    def test_count(self):
+    def test_count_db(self):
         """ Test that count method is working properly """
         dict = {"name": "Statt1"}
         instance = State(**dict)
         storage.new(instance)
         storage.save()
-        dict = {"name": "city1"}
-        instance = City(**dict)
+        dict = {"name": "city1", "state_id": instance.id}
+        city = City(**dict)
         storage.new(city)
         storage.save()
 
         c = storage.count()
 
-        self.assertEqual(len(dtorage.all()), c)
+        self.assertEqual(len(storage.all()), c)
