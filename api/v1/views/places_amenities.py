@@ -20,10 +20,10 @@ def amenities_get(place_id):
     if not place_obj:
         abort(404)
     if storage_t == "db":
-        amenities = [amenity.to_dict() for amenity in place_obj.amenities]
+        all_amenities = [amenity.to_dict() for amenity in place_obj.amenities]
     else:
         amenities = storage.get(Amenity, amenity_ids)
-    all_amenities = [
+        all_amenities = [
             amenity.to_dict() for amenity in place_obj.amenity_ids]
     return jsonify(all_amenities)
 
