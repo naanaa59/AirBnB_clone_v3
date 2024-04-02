@@ -15,7 +15,7 @@ storage_t = environ.get('HBNB_TYPE_STORAGE')
 
 @app_views.route("/places/<place_id>/amenities", methods=[
     'GET'], strict_slashes=False)
-def amenities_get(place_id):
+def place_amenities_get(place_id):
     place_obj = storage.get(Place, place_id)
     if not place_obj:
         abort(404)
@@ -30,7 +30,7 @@ def amenities_get(place_id):
 
 @app_views.route("/places/<place_id>/amenities/<amenity_id>", methods=[
     'DELETE'], strict_slashes=False)
-def amenity_id_delete(amenity_id):
+def place_amenity_id_delete(amenity_id):
     place_obj = storage.get(Place, place_id)
     if not place_obj:
         abort(404)
@@ -51,7 +51,7 @@ def amenity_id_delete(amenity_id):
 
 @app_views.route("/places/<place_id>/amenities/<amenity_id>", methods=[
     'POST'], strict_slashes=False)
-def amenity_post(amenity_id):
+def place_amenity_post(amenity_id):
     place_obj = storage.get(Place, place_id)
     if not place_obj:
         abort(404)
