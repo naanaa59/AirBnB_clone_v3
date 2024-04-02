@@ -2,6 +2,7 @@
 """ holds class User"""
 import models
 from models.base_model import BaseModel, Base
+import hashlib
 from os import getenv
 import sqlalchemy
 from sqlalchemy import Column, String
@@ -28,4 +29,6 @@ class User(BaseModel, Base):
 
     def __init__(self, *args, **kwargs):
         """initializes user"""
+        kwargs["password"] = hashlib.md5(
+                kwargs["password"].encode()).hexdigest()
         super().__init__(*args, **kwargs)
