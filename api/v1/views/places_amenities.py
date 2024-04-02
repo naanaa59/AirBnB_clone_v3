@@ -22,15 +22,14 @@ def place_amenities_get(place_id):
     if storage_t == "db":
         all_amenities = [amenity.to_dict() for amenity in place_obj.amenities]
     else:
-        amenities = storage.get(Amenity, amenity_ids)
         all_amenities = [
-            amenity.to_dict() for amenity in place_obj.amenity_ids]
+            storage.get(Amenity, am).to_dict() for am in place_obj.amenity_ids]
     return jsonify(all_amenities)
 
 
 @app_views.route("/places/<place_id>/amenities/<amenity_id>", methods=[
     'DELETE'], strict_slashes=False)
-def place_amenity_id_delete(amenity_id):
+def place_amenity_id_delete(place_id, amenity_id):
     place_obj = storage.get(Place, place_id)
     if not place_obj:
         abort(404)
@@ -51,21 +50,21 @@ def place_amenity_id_delete(amenity_id):
 
 @app_views.route("/places/<place_id>/amenities/<amenity_id>", methods=[
     'POST'], strict_slashes=False)
-def place_amenity_post(amenity_id):
+def place_amenity_post(place_id, amenity_id):
     place_obj = storage.get(Place, place_id)
     if not place_obj:
         abort(404)
     amenity_obj = storage.get(Amenity, amenity_id)
     if not amenity_obj:
         abort(404)
-        if storage_t == "db":
-            if amenity_obj not in place_obj.amenities:
-                place_obj.amenities.append(amenity_obj)
-            else:
-                return jsonify(amenity_obj.to_dict()), 200
+    if storage_t == "db":
+        if amenity_obj not in place_obj.amenities:
+            place_obj.amenities.append(amenity_obj)
         else:
-            if amenity_id not in place_obj.amenity_ids:
-                place_obj.amenity_ids.append(amenity_id)
-            else:
-                return jsonify(amenity_obj.to_dict()), 200
-        return jsonify(amenity_obj.to_dict()), 201
+            return jsonify(amenity_obj.to_dict()), 200
+    else:
+        if amenity_id not in place_obj.amenity_ids:
+            place_obj.amenity_ids.append(amenity_id)
+        else:
+            return jsonify(amenity_obj.to_dict()), 200
+    return jsonify(amenity_obj.to_dict()), 201
